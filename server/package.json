@@ -12,6 +12,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@faker-js/faker": "^8.0.2",
 		"@jest/globals": "^29.6.4",
 		"@types/express": "^4.17.17",
 		"@types/node": "^20.5.9",
