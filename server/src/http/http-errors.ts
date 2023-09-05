@@ -1,3 +1,5 @@
+import { ValidationErrorsBag } from './utils/validation';
+
 export class HttpError extends Error {
 	static defaultMessage = 'Something went wrong';
 	statusCode: number;
@@ -19,12 +21,12 @@ export class HttpError extends Error {
 
 export class ValidationError extends HttpError {
 	static defaultMessage = 'The given data was invalid';
-	errors: { [field: string]: string[] };
+	errors: ValidationErrorsBag;
 
 	constructor(
 		message: string = ValidationError.defaultMessage,
 		statusCode: number = 422,
-		errors: ValidationError['errors'] = {}
+		errors: ValidationErrorsBag = {}
 	) {
 		super(message, statusCode);
 
@@ -36,7 +38,7 @@ export class ValidationError extends HttpError {
 		return { message: this.message, errors: this.errors };
 	}
 
-	static create(errors: ValidationError['errors'] = {}) {
+	static create(errors: ValidationErrorsBag = {}) {
 		return new ValidationError(ValidationError.defaultMessage, 422, errors);
 	}
 }
