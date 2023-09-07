@@ -29,6 +29,20 @@ function validate(data: Object): StoreRequest | UpdateRequest {
 	return validated.data;
 }
 
+async function findOrFail(id: any): Promise<Users> {
+	id = Number(id);
+	if (!Number.isInteger(id)) {
+		throw new HttpBadRequestError();
+	}
+
+	const user = await Users.findByPk(id);
+	if (!user) {
+		throw new ResourceNotFoundError();
+	}
+
+	return user;
+}
+
 export default {
 	async index(req: Request, res: Response) {
 		const users = await Users.findAll();
@@ -38,6 +52,12 @@ export default {
 		});
 	},
 
+	async show(req: Request, res: Response) {
+		const user = await findOrFail(req.params.user);
+
+		return res.send({ data: transformToUsersResource(user) });
+	},
+
 	async store(req: Request, res: Response) {
 		const user = await Users.create(validate(req.body));
 
@@ -45,15 +65,7 @@ export default {
 	},
 
 	async update(req: Request, res: Response) {
-		const id = Number(req.params.user);
-		if (!Number.isInteger(id)) {
-			throw new HttpBadRequestError();
-		}
-
-		const user = await Users.findByPk(id);
-		if (!user) {
-			throw new ResourceNotFoundError();
-		}
+		const user = await findOrFail(req.params.user);
 
 		await user.update(validate(req.body));
 
