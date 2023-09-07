@@ -1,11 +1,11 @@
 const DataTypes = require('sequelize').DataTypes;
 
 module.exports = {
-	/** @type {import('../src/services/umzug').Migration} */
+	/** @type {import('../../src/services/umzug').Migration} */
 	up: async ({ context: sequelize }) => {
 		await sequelize.getQueryInterface().createTable('users', {
 			id: {
-				type: DataTypes.INTEGER({ unsigned: true }),
+				type: DataTypes.INTEGER.UNSIGNED,
 				allowNull: false,
 				primaryKey: true,
 				autoIncrement: true,
@@ -24,7 +24,7 @@ module.exports = {
 		});
 	},
 
-	/** @type {import('../src/services/umzug').Migration} */
+	/** @type {import('../../src/services/umzug').Migration} */
 	down: async ({ context: sequelize }) => {
 		await sequelize.getQueryInterface().dropTable('users');
 	},

@@ -1,11 +1,10 @@
 import { Umzug, SequelizeStorage } from 'umzug';
-import { Sequelize } from 'sequelize';
 import sequelize from './sequelize';
 import { pathToFileURL } from 'url';
 
 const umzug = new Umzug({
 	migrations: {
-		glob: 'migrations/*.cjs',
+		glob: 'database/migrations/*.cjs',
 	},
 	context: sequelize,
 	storage: new SequelizeStorage({ sequelize }),

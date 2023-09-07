@@ -1,5 +1,5 @@
 {
 	"extends": "./tsconfig.json",
 
-	"exclude": ["tests", "jest.config.ts", "migrations"]
+	"exclude": ["tests", "jest.config.ts", "database"]
 }
