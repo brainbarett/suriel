@@ -71,4 +71,12 @@ export default {
 
 		return res.send({ data: transformToUsersResource(user) });
 	},
+
+	async destroy(req: Request, res: Response) {
+		const user = await findOrFail(req.params.user);
+
+		await user.destroy();
+
+		return res.status(204).send();
+	},
 };

@@ -86,4 +86,12 @@ describe('/users', () => {
 
 		expectModelAttributes(await user.reload(), payload);
 	});
+
+	test('can destroy a user', async () => {
+		const user: Users = await factory.create(Users.tableName);
+
+		await request.delete(`/users/${user.id}`).expect(204);
+
+		expect(await Users.findByPk(user.id)).toBeNull();
+	});
 });
