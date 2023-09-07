@@ -36,6 +36,18 @@ describe('/users', () => {
 	useRefreshDatabase();
 	useModelFactories();
 
+	test('can get users index', async () => {
+		const users: Users[] = await factory.createMany(Users.tableName, 5);
+
+		const response = await request.get('/users').expect(200);
+
+		const body: ApiResponse<UsersResource[]> = response.body;
+
+		expect(body.data.map(user => user.id).sort()).toEqual(
+			users.map(user => user.id).sort()
+		);
+	});
+
 	test('can create a new user', async () => {
 		const payload: StoreRequest = await factory.attrs(Users.tableName);
 

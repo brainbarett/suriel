@@ -25,6 +25,14 @@ function validate(data: Object): StoreRequest {
 }
 
 export default {
+	async index(req: Request, res: Response) {
+		const users = await Users.findAll();
+
+		return res.send({
+			data: users.map(user => transformToUsersResource(user)),
+		});
+	},
+
 	async store(req: Request, res: Response) {
 		const user = await Users.create(validate(req.body));
 
