@@ -3,7 +3,8 @@ import usersController from '../controllers/users.controller';
 
 const router = express.Router();
 
-router.route('/users').get(usersController.index);
-router.route('/users').post(usersController.store);
+router.get('/users/', usersController.index);
+router.post('/users/', usersController.store);
+router.put('/users/:user', usersController.update);
 
 export default router;

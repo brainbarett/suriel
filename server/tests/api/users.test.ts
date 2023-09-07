@@ -1,7 +1,10 @@
 import { describe, expect, test } from '@jest/globals';
 import supertest from 'supertest';
 import app from '@/app';
-import { StoreRequest } from '@/http/controllers/users.controller';
+import {
+	StoreRequest,
+	UpdateRequest,
+} from '@/http/controllers/users.controller';
 import useRefreshDatabase from '../refresh-database';
 import Users from '@/models/users';
 import { Attributes } from 'sequelize';
@@ -58,5 +61,19 @@ describe('/users', () => {
 		const user = await Users.findByPk(body.data.id);
 		expect(user).not.toBeNull();
 		expectModelAttributes(user!, payload);
+	});
+
+	test('can update a user', async () => {
+		const user: Users = await factory.create(Users.tableName);
+		const payload: UpdateRequest = await factory.attrs(Users.tableName);
+
+		const response = await request
+			.put(`/users/${user.id}`)
+			.send(payload)
+			.expect(200);
+
+		const body: ApiResponse<UsersResource> = response.body;
+
+		expectModelAttributes(await user.reload(), payload);
 	});
 });

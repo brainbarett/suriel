@@ -19,6 +19,45 @@ export class HttpError extends Error {
 	}
 }
 
+export class HttpBadRequestError extends HttpError {
+	static defaultMessage = 'Bad request';
+
+	constructor(
+		message: string = HttpBadRequestError.defaultMessage,
+		statusCode: number = 400
+	) {
+		super(message, statusCode);
+
+		this.name = 'HttpBadRequestError';
+	}
+}
+
+export class HttpNotFoundError extends HttpError {
+	static defaultMessage = 'Not found';
+
+	constructor(
+		message: string = HttpNotFoundError.defaultMessage,
+		statusCode: number = 404
+	) {
+		super(message, statusCode);
+
+		this.name = 'HttpNotFoundError';
+	}
+}
+
+export class ResourceNotFoundError extends HttpNotFoundError {
+	static defaultMessage = 'Resource not found';
+
+	constructor(
+		message: string = ResourceNotFoundError.defaultMessage,
+		statusCode: number = 404
+	) {
+		super(message, statusCode);
+
+		this.name = 'ResourceNotFoundError';
+	}
+}
+
 export class ValidationError extends HttpError {
 	static defaultMessage = 'The given data was invalid';
 	errors: ValidationErrorsBag;
