@@ -4,18 +4,34 @@ import {
 	InferAttributes,
 	InferCreationAttributes,
 	CreationOptional,
+	NonAttribute,
+	HasManyGetAssociationsMixin,
+	HasManyCreateAssociationMixin,
 } from 'sequelize';
 import { sequelize } from '@/app';
 import hash from '@/utils/hash';
+import PersonalAccessTokens from './personal_access_tokens';
 
 class Users extends Model<
 	InferAttributes<Users>,
 	InferCreationAttributes<Users>
 > {
 	declare id: CreationOptional<number>;
+
 	declare name: string;
 	declare email: string;
 	declare password: string;
+
+	declare accessTokens?: NonAttribute<PersonalAccessTokens[]>;
+	declare getAccessTokens: HasManyGetAssociationsMixin<PersonalAccessTokens>;
+	declare createAccessTokens: HasManyCreateAssociationMixin<
+		PersonalAccessTokens,
+		'user_id'
+	>;
+
+	generateAccessToken() {
+		return PersonalAccessTokens.generateTokenForUser(this.id);
+	}
 
 	declare created_at: CreationOptional<Date>;
 	declare updated_at: CreationOptional<Date>;
@@ -57,5 +73,10 @@ Users.init(
 		tableName: 'users',
 	}
 );
+
+Users.hasMany(PersonalAccessTokens, {
+	foreignKey: 'user_id',
+	as: 'accessTokens',
+});
 
 export default Users;
