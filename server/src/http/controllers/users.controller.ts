@@ -5,21 +5,24 @@ import {
 	ResourceNotFoundError,
 	ValidationError,
 } from '../http-errors';
-import { useZodErrorsFormatter } from '../utils/validation';
+import { unique, useZodErrorsFormatter } from '../utils/validation';
 import Users from '@/models/users';
 import transformToUsersResource from '../resources/users.resource';
 
 const validator = z.object({
 	name: z.string(),
-	email: z.string().email(),
+	email: z
+		.string()
+		.email()
+		.refine(...unique(Users, 'email')),
 	password: z.string(),
 });
 
 export type StoreRequest = z.infer<typeof validator>;
 export type UpdateRequest = StoreRequest;
 
-function validate(data: Object): StoreRequest | UpdateRequest {
-	const validated = validator.safeParse(data);
+async function validate(data: Object): Promise<StoreRequest | UpdateRequest> {
+	const validated = await validator.safeParseAsync(data);
 
 	if (!validated.success) {
 		const errors = useZodErrorsFormatter(validated.error);
@@ -59,7 +62,7 @@ export default {
 	},
 
 	async store(req: Request, res: Response) {
-		const user = await Users.create(validate(req.body));
+		const user = await Users.create(await validate(req.body));
 
 		return res.status(201).send({ data: transformToUsersResource(user) });
 	},
@@ -67,7 +70,7 @@ export default {
 	async update(req: Request, res: Response) {
 		const user = await findOrFail(req.params.user);
 
-		await user.update(validate(req.body));
+		await user.update(await validate(req.body));
 
 		return res.send({ data: transformToUsersResource(user) });
 	},
