@@ -1,5 +1,5 @@
-import { describe, expect, test } from '@jest/globals';
-import supertest from 'supertest';
+import { beforeEach, describe, expect, test } from '@jest/globals';
+import { agent as supertest } from 'supertest';
 import app from '@/app';
 import {
 	StoreRequest,
@@ -39,6 +39,15 @@ describe('/users', () => {
 	useRefreshDatabase();
 	useModelFactories();
 
+	let user: Users;
+
+	beforeEach(async () => {
+		user = await factory.create(Users.tableName);
+		const { plainTextToken } = await user.generateAccessToken();
+
+		request.auth(plainTextToken, { type: 'bearer' });
+	});
+
 	test('can get a specific user', async () => {
 		const user: Users = await factory.create(Users.tableName);
 
@@ -51,6 +60,7 @@ describe('/users', () => {
 
 	test('can get users index', async () => {
 		const users: Users[] = await factory.createMany(Users.tableName, 5);
+		users.unshift(user);
 
 		const response = await request.get('/users').expect(200);
 
