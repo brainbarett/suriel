@@ -1,9 +1,13 @@
+import PersonalAccessTokens from '@/models/personal_access_tokens';
 import Users from '@/models/users';
 
 declare global {
 	namespace Express {
 		interface Request {
-			auth?: Users;
+			auth?: {
+				token: PersonalAccessTokens;
+				user: Users;
+			};
 		}
 	}
 }

@@ -42,7 +42,10 @@ const authenticate = async (
 		throw new HttpUnauthorizedError();
 	}
 
-	req.auth = user;
+	req.auth = {
+		token: accessToken,
+		user,
+	};
 
 	return next();
 };

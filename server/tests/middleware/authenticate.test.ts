@@ -5,15 +5,15 @@ import useRefreshDatabase from '../refresh-database';
 import useModelFactories from '../model-factories';
 import Users from '@/models/users';
 import factory from '../../database/factories/factory';
-import useAuthenticate from '@/http/middleware/authenticate';
+import authenticate from '@/http/middleware/authenticate';
 import httpErrorHandler from '@/http/middleware/http-error-handler';
 
 let appTemplate = express().use(express.json());
 appTemplate.get(
 	'/protected',
-	useAuthenticate,
+	authenticate,
 	(req: Request, res: Response) => {
-		return res.send({ id: req.auth!.id });
+		return res.send({ id: req.auth!.user.id });
 	},
 	httpErrorHandler
 );
