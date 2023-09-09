@@ -63,7 +63,7 @@ PersonalAccessTokens.init(
 			defaultValue: () => {
 				const date = new Date();
 				date.setDate(date.getDate() + 1);
-				return date.toISOString().slice(0, 19).replace('T', ' ');
+				return date;
 			},
 		},
 		last_used_at: DataTypes.DATE,
