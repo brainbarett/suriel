@@ -6,7 +6,6 @@ import {
 	CreationOptional,
 	NonAttribute,
 	HasManyGetAssociationsMixin,
-	HasManyCreateAssociationMixin,
 } from 'sequelize';
 import { sequelize } from '@/app';
 import hash from '@/utils/hash';
@@ -24,10 +23,6 @@ class Users extends Model<
 
 	declare accessTokens?: NonAttribute<PersonalAccessTokens[]>;
 	declare getAccessTokens: HasManyGetAssociationsMixin<PersonalAccessTokens>;
-	declare createAccessTokens: HasManyCreateAssociationMixin<
-		PersonalAccessTokens,
-		'user_id'
-	>;
 
 	generateAccessToken() {
 		return PersonalAccessTokens.generateTokenForUser(this.id);

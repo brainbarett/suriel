@@ -32,6 +32,19 @@ export class HttpBadRequestError extends HttpError {
 	}
 }
 
+export class HttpUnauthorizedError extends HttpError {
+	static defaultMessage = 'Unauthorized';
+
+	constructor(
+		message: string = HttpUnauthorizedError.defaultMessage,
+		statusCode: number = 401
+	) {
+		super(message, statusCode);
+
+		this.name = 'HttpUnauthorizedError';
+	}
+}
+
 export class HttpNotFoundError extends HttpError {
 	static defaultMessage = 'Not found';
 
