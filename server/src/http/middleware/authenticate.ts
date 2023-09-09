@@ -42,6 +42,8 @@ const authenticate = async (
 		throw new HttpUnauthorizedError();
 	}
 
+	await accessToken.update({ last_used_at: new Date() });
+
 	req.auth = {
 		token: accessToken,
 		user,
