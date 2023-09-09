@@ -22,7 +22,7 @@ describe('/auth', () => {
 		})) as Users;
 	});
 
-	test('can_login', async () => {
+	test('can login', async () => {
 		const response = await request
 			.post('/auth/login')
 			.send({ email: user.email, password: 'password' })
@@ -35,5 +35,32 @@ describe('/auth', () => {
 		expect(hash.check(body.data.token, userAccessTokens[0].token)).toBe(
 			true
 		);
+	});
+
+	test('can check we are logged in', async () => {
+		const { plainTextToken } = await user.generateAccessToken();
+
+		const response = await request
+			.get('/auth/authenticated')
+			.set({ Authorization: `Bearer ${plainTextToken}` })
+			.expect(200);
+
+		const body: ApiResponse<Users> = response.body;
+
+		expect(body.data.id).toEqual(user.id);
+	});
+
+	test('logging out makes the token unusable', async () => {
+		const { plainTextToken } = await user.generateAccessToken();
+
+		await request
+			.post('/auth/logout')
+			.set({ Authorization: `Bearer ${plainTextToken}` })
+			.expect(204);
+
+		await request
+			.get('/auth/authenticated')
+			.set({ Authorization: `Bearer ${plainTextToken}` })
+			.expect(401);
 	});
 });

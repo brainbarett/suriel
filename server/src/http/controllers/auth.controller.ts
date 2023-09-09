@@ -42,4 +42,14 @@ export default {
 
 		return res.send({ data: { token: token.plainTextToken } });
 	},
+
+	async authenticated(req: Request, res: Response) {
+		return res.send({ data: req.auth!.user });
+	},
+
+	async logout(req: Request, res: Response) {
+		await req.auth!.token.destroy();
+
+		return res.status(204).send();
+	},
 };
