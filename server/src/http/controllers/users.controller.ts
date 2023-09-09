@@ -21,7 +21,9 @@ const validator = z.object({
 export type StoreRequest = z.infer<typeof validator>;
 export type UpdateRequest = StoreRequest;
 
-async function validate(data: Object): Promise<StoreRequest | UpdateRequest> {
+async function validate(data: {
+	[key: string]: any;
+}): Promise<StoreRequest | UpdateRequest> {
 	const validated = await validator.safeParseAsync(data);
 
 	if (!validated.success) {

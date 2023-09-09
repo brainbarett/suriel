@@ -15,7 +15,7 @@ const validator = z.object({
 
 export type LoginRequest = z.infer<typeof validator>;
 
-async function validate(data: Object): Promise<LoginRequest> {
+async function validate(data: { [key: string]: any }): Promise<LoginRequest> {
 	const validated = await validator.safeParseAsync(data);
 
 	if (!validated.success) {

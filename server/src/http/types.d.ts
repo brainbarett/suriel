@@ -12,6 +12,6 @@ declare global {
 	}
 }
 
-export interface ApiResponse<TData = Object | Object[]> {
+export interface ApiResponse<TData = object | object[]> {
 	data: TData;
 }
