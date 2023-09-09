@@ -15,6 +15,11 @@ module.exports = {
 
 				user_id: {
 					type: DataTypes.INTEGER.UNSIGNED,
+					references: {
+						model: 'users',
+						key: 'id',
+					},
+					onDelete: 'CASCADE',
 					allowNull: false,
 				},
 
