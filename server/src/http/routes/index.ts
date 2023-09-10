@@ -1,3 +1,4 @@
+import 'express-async-errors';
 import usersRoutes from './users.routes';
 import authRoutes from './auth.routes';
 
