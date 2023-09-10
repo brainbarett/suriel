@@ -10,7 +10,7 @@ const validator = z.object({
 		.string()
 		.email()
 		.refine(...exists(Users, 'email')),
-	password: z.string(),
+	password: z.string().nonempty(),
 });
 
 export type LoginRequest = z.infer<typeof validator>;

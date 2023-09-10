@@ -10,12 +10,12 @@ import Users from '@/models/users';
 import transformToUsersResource from '../resources/users.resource';
 
 const validator = z.object({
-	name: z.string(),
+	name: z.string().nonempty(),
 	email: z
 		.string()
 		.email()
 		.refine(...unique(Users, 'email')),
-	password: z.string(),
+	password: z.string().nonempty(),
 });
 
 export type StoreRequest = z.infer<typeof validator>;
