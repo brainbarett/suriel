@@ -4,7 +4,8 @@ import { LoadingSpinner } from '../LoadingSpinner';
 
 export type ButtonProps = {
 	className?: string;
-	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+	type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type'];
+	onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 	label: string;
 	loading?: boolean;
 	primary?: boolean;
@@ -13,6 +14,7 @@ export type ButtonProps = {
 
 export function Button({
 	className,
+	type = 'submit',
 	onClick,
 	label,
 	loading,
@@ -20,14 +22,14 @@ export function Button({
 	Icon,
 }: ButtonProps) {
 	const finalClassName = [
-		className,
 		styles.button,
 		primary && styles.primary,
 		loading && styles.loading,
+		className,
 	].join(' ');
 
 	return (
-		<button type="button" className={finalClassName} onClick={onClick}>
+		<button type={type} className={finalClassName} onClick={onClick}>
 			{label} <Icon className="w-5 h-5 ml-2 text-" />
 			{loading && (
 				<LoadingSpinner className="absolute text-white -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
