@@ -28,7 +28,7 @@ async function validate(data: {
 
 	if (!validated.success) {
 		const errors = useZodErrorsFormatter(validated.error);
-		throw ValidationError.create(errors);
+		throw ValidationError.withMessages(errors);
 	}
 
 	return validated.data;

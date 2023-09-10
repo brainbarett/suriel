@@ -118,7 +118,7 @@ describe('http-errors', () => {
 				field1: [faker.lorem.sentence()],
 			};
 
-			const error = ValidationError.create(validationErrors);
+			const error = ValidationError.withMessages(validationErrors);
 
 			expect(error.statusCode).toBe(422);
 			expect(error.payload()).toEqual({

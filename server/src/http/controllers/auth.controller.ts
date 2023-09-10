@@ -20,7 +20,7 @@ async function validate(data: { [key: string]: any }): Promise<LoginRequest> {
 
 	if (!validated.success) {
 		const errors = useZodErrorsFormatter(validated.error);
-		throw ValidationError.create(errors);
+		throw ValidationError.withMessages(errors);
 	}
 
 	return validated.data;

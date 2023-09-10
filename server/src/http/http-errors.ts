@@ -90,7 +90,7 @@ export class ValidationError extends HttpError {
 		return { message: this.message, errors: this.errors };
 	}
 
-	static create(errors: ValidationErrorsBag = {}) {
+	static withMessages(errors: ValidationErrorsBag = {}) {
 		return new ValidationError(ValidationError.defaultMessage, 422, errors);
 	}
 }
