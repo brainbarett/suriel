@@ -5,7 +5,7 @@
 	"main": "dist/server.js",
 	"scripts": {
 		"build": "npx eslint src/** && tsc --project tsconfig.build.json && tsc-alias",
-		"start": "node --no-warnings --experimental-specifier-resolution=node dist/server.js",
+		"start": "node --no-warnings --experimental-specifier-resolution=node -r dotenv/config dist/server.js",
 		"start:dev": "tsc-watch --project tsconfig.build.json --onSuccess \"tsc-alias && npm run start\"",
 		"test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
 		"umzug": "ts-node -r dotenv/config src/services/umzug.ts",
