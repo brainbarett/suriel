@@ -1,8 +1,9 @@
 {
 	"compilerOptions": {
 		"strict": true,
-		"module": "es2022",
-		"target": "ES6",
+		"module": "ES2022",
+		"target": "ES2022",
+		"lib": ["ES2022"],
 		"moduleResolution": "node",
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
