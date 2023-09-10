@@ -1,7 +1,9 @@
 import express from 'express';
+/** @ts-ignore */
+import cors from 'cors';
 
 const app = express();
-app.use(express.json());
+app.use([express.json(), cors()]);
 
 export { default as sequelize } from '@/services/sequelize';
 
