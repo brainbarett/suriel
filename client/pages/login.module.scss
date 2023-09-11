@@ -1,0 +1,11 @@
+.login-form__input-container {
+	@apply relative mb-4;
+
+	> svg {
+		@apply absolute w-5 h-5 text-gray-400 -translate-y-1/2 left-3 top-1/2;
+	}
+
+	> input {
+		@apply w-full p-2 pl-10 overflow-hidden border border-gray-300 rounded;
+	}
+}
