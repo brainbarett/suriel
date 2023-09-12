@@ -6,7 +6,7 @@ import {
 } from '@heroicons/react/24/outline';
 import styles from './login.module.scss';
 import { Button } from '@/components/Button';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -136,7 +136,7 @@ function useLoginForm() {
 
 	return {
 		register,
-		onSubmit: () => handleSubmit(onSubmit),
+		onSubmit: useMemo(() => handleSubmit(onSubmit), []),
 		errors,
 		loading,
 	};
