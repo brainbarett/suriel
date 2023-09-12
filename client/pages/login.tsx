@@ -31,7 +31,7 @@ export default function Login() {
 					</div>
 				</div>
 
-				<Form />
+				<LoginForm />
 			</div>
 		</div>
 	);
@@ -41,54 +41,11 @@ type FormData = {
 	email: string;
 	password: string;
 };
-const validator = z.object({
-	email: z.string().email(),
-	password: z.string().nonempty(),
-});
-function Form() {
-	const dispatch = useDispatch();
-	const [loading, setLoading] = useState(false);
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-		setError,
-		clearErrors,
-	} = useForm<FormData>({
-		resolver: zodResolver(validator),
-	});
-
-	const onSubmit = useCallback(async (data: FormData) => {
-		setLoading(true);
-		clearErrors();
-
-		await AuthApi.login(data)
-			.then(res => {
-				dispatch(setToken(res.data.data.token));
-				alert('login success');
-			})
-			.catch((res: AxiosResponse<ErrorResponse>) => {
-				if (res.status == 422) {
-					for (const [field, errors] of Object.entries(
-						(res.data as ValidationErrorResponse).errors
-					)) {
-						setError(field as keyof FormData, {
-							message: errors[0],
-						});
-					}
-				}
-
-				setError('root', { message: res.data.message });
-			});
-
-		setLoading(false);
-	}, []);
+function LoginForm() {
+	const { register, onSubmit, errors, loading } = useLoginForm();
 
 	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className="box-border p-6 pt-0 -mt-5"
-		>
+		<form onSubmit={onSubmit} className="box-border p-6 pt-0 -mt-5">
 			<h1 className="mb-6 text-2xl font-bold text-center">
 				Welcome back!
 			</h1>
@@ -131,4 +88,56 @@ function Form() {
 			)}
 		</form>
 	);
+}
+
+const validator = z.object({
+	email: z.string().email(),
+	password: z.string().nonempty(),
+});
+function useLoginForm() {
+	const dispatch = useDispatch();
+	const [loading, setLoading] = useState(false);
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		setError,
+		clearErrors,
+	} = useForm<FormData>({
+		resolver: zodResolver(validator),
+	});
+
+	const onSubmit = useCallback(async (data: FormData) => {
+		setLoading(true);
+		clearErrors();
+
+		await AuthApi.login(data)
+			.then(res => {
+				dispatch(setToken(res.data.data.token));
+				alert('login success');
+			})
+			.catch((res: AxiosResponse<ErrorResponse>) => {
+				if (res.status == 422) {
+					for (const [field, errors] of Object.entries(
+						(res.data as ValidationErrorResponse).errors
+					)) {
+						setError(field as keyof FormData, {
+							message: errors[0],
+						});
+					}
+				}
+
+				setError('root', { message: res.data.message });
+			});
+
+		setLoading(false);
+	}, []);
+
+	return {
+		register,
+		onSubmit: () => handleSubmit(onSubmit),
+		errors,
+		loading,
+	};
 }
