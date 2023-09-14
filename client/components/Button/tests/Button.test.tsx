@@ -38,17 +38,21 @@ describe('<Button />', () => {
 	});
 
 	describe('loading', () => {
-		/**
-		 * cant test below since there's no method to check if a component contains another component
-		 * i.e. expect().toContainReactComponent()
-		 * https://github.com/testing-library/react-testing-library/issues/251#issuecomment-451263607
-		 */
-		it.todo('renders a spinner');
+		it('renders a spinner', async () => {
+			const button = render(<Button label="label" loading />);
+
+			expect(
+				button.container.getElementsByClassName('loading-spinner')
+					.length
+			).toBe(1);
+		});
 	});
 
 	describe('icon', () => {
 		/**
-		 * cant test because of same issue in decribe('loading).it('renders a spinner')
+		 * cant test below since there's no method to check if a component contains another component
+		 * i.e. expect().toContainReactComponent()
+		 * https://github.com/testing-library/react-testing-library/issues/251#issuecomment-451263607
 		 */
 		it.todo('renders the passed icon');
 	});
