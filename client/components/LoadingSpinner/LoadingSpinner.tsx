@@ -5,29 +5,20 @@ type LoadingSpinnerProps = {
 	size?: 'xs' | 'sm' | 'base' | 'lg';
 };
 
+const sizeObj: { [size in NonNullable<LoadingSpinnerProps['size']>]: number } =
+	{
+		xs: 16,
+		sm: 20,
+		base: 24,
+		lg: 28,
+	};
+
 export function LoadingSpinner({
 	className,
 	size = 'base',
 }: LoadingSpinnerProps) {
-	let sizeInt: number;
-
-	switch (size) {
-		case 'xs':
-			sizeInt = 16;
-			break;
-
-		case 'sm':
-			sizeInt = 20;
-			break;
-
-		case 'base':
-			sizeInt = 24;
-			break;
-
-		case 'lg':
-			sizeInt = 28;
-			break;
-	}
+	const sizeInt = sizeObj[size];
+	const finalClassName = ['loading-spinner', className].join(' ');
 
 	return (
 		<svg
@@ -36,7 +27,7 @@ export function LoadingSpinner({
 			stroke="#000"
 			viewBox={[0, 0, sizeInt, sizeInt].join(' ')}
 			xmlns="http://www.w3.org/2000/svg"
-			className={className}
+			className={finalClassName}
 		>
 			<style
 				dangerouslySetInnerHTML={{
